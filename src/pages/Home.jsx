@@ -49,7 +49,7 @@ const Home = () => {
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[...Array(4)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <PostCardSkeleton key={i} />
           ))}
         </div>
