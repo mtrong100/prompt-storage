@@ -5,16 +5,16 @@ import { useAuth } from "../context/AuthContext";
 import PostCard from "../components/PostCard";
 import SearchFilter from "../components/SearchFilter";
 import toast from "react-hot-toast";
-import { Loader2 } from "lucide-react";
 
 const PostCardSkeleton = () => (
   <div className="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 animate-pulse">
     <div className="h-6 w-3/4 bg-gray-700 rounded mb-4"></div>
     <div className="space-y-2 mb-5">
-      <div className="h-4 bg-gray-700 rounded"></div>
-      <div className="h-4 bg-gray-700 rounded w-5/6"></div>
-      <div className="h-4 bg-gray-700 rounded w-2/3"></div>
+      {Array.from({ length: 22 }).map((_, i) => (
+        <div key={i} className="h-5 bg-gray-700 rounded w-full"></div>
+      ))}
     </div>
+
     <div className="flex justify-between items-center pt-3 border-t border-gray-700">
       <div className="h-8 w-24 bg-gray-700 rounded-lg"></div>
       <div className="flex space-x-2">
@@ -49,7 +49,7 @@ const Home = () => {
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(10)].map((_, i) => (
             <PostCardSkeleton key={i} />
           ))}
         </div>

@@ -6,8 +6,6 @@ import { useAuth } from "../context/AuthContext";
 import { usePosts } from "../hooks/usePosts";
 import toast from "react-hot-toast";
 import { X, Loader2, Save, ChevronLeft } from "lucide-react";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
 
 const EditPost = () => {
   const { id } = useParams();
@@ -18,27 +16,6 @@ const EditPost = () => {
   const [post, setPost] = useState({ title: "", description: "" });
   const [isFetching, setIsFetching] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
-      ["clean"],
-    ],
-  };
-
-  const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "list",
-    "link",
-    "image",
-  ];
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -115,6 +92,7 @@ const EditPost = () => {
         </h2>
 
         <div className="space-y-4">
+          {/* Title */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Title
@@ -129,25 +107,25 @@ const EditPost = () => {
             />
           </div>
 
+          {/* Description */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Content
             </label>
-            <div className="overflow-hidden">
-              <ReactQuill
-                theme="snow"
-                value={post.description}
-                onChange={(value) => setPost({ ...post, description: value })}
-                modules={modules}
-                formats={formats}
-                readOnly={isSubmitting}
-                className="my-4 dark:border-secondary-40 border-gray-500 rounded-md text-gray-800 dark:text-white text-lg"
-                placeholder={"Write something here..."}
-              />
-            </div>
+            <textarea
+              value={post.description}
+              onChange={(e) =>
+                setPost({ ...post, description: e.target.value })
+              }
+              className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all placeholder-gray-400 min-h-[500px]"
+              placeholder="Write something here..."
+              required
+              disabled={isSubmitting}
+            />
           </div>
         </div>
 
+        {/* Action Buttons */}
         <div className="flex justify-end space-x-3 pt-4">
           <button
             type="button"

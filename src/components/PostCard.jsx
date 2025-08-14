@@ -7,56 +7,11 @@ const PostCard = ({ post, onDelete, currentUser }) => {
   const [isCopied, setIsCopied] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Safe HTML renderer
-  const renderHTML = (html) => {
-    if (!html) return null;
-
-    // Basic sanitization (replace with more robust sanitizer if needed)
-    const sanitized = html
-      .replace(/<script.*?>.*?<\/script>/gi, "")
-      .replace(/on\w+=".*?"/gi, "");
-
-    return { __html: sanitized };
-  };
-
-  // Format HTML to readable plain text
-  const formatForCopy = (html) => {
-    const temp = document.createElement("div");
-    temp.innerHTML = html || "";
-
-    // Convert various HTML elements to plain text
-    const conversions = [
-      { selector: "h1, h2, h3, h4, h5, h6", prefix: "\n\n", suffix: "\n\n" },
-      { selector: "p", prefix: "\n", suffix: "\n" },
-      { selector: "li", prefix: "• ", suffix: "\n" },
-      { selector: "br", replace: "\n" },
-    ];
-
-    conversions.forEach(({ selector, prefix, suffix, replace }) => {
-      temp.querySelectorAll(selector).forEach((el) => {
-        if (replace) {
-          el.outerHTML = replace;
-        } else {
-          el.outerHTML = `${prefix || ""}${el.textContent}${suffix || ""}`;
-        }
-      });
-    });
-
-    return temp.textContent.replace(/\n{3,}/g, "\n\n").trim();
-  };
-
-  const handleCopy = async () => {
-    try {
-      const textToCopy = formatForCopy(post.description);
-      await navigator.clipboard.writeText(textToCopy);
-
+  const handleCopy = () => {
+    navigator.clipboard.writeText(post.description).then(() => {
       setIsCopied(true);
-      toast.success("Copied with formatting!");
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to copy");
-    }
+      toast.success("Post ID copied to clipboard!");
+    });
   };
 
   return (
@@ -70,10 +25,9 @@ const PostCard = ({ post, onDelete, currentUser }) => {
           {post.title}
         </h3>
 
-        <div
-          className="prose max-w-none mb-5 text-gray-300"
-          dangerouslySetInnerHTML={renderHTML(post.description)}
-        />
+        <p className="prose max-w-none mb-5 text-gray-300 whitespace-pre-wrap">
+          {post.description}
+        </p>
       </div>
 
       <div className="flex justify-between items-center pt-3 border-t border-gray-700">
