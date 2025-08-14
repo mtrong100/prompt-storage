@@ -1,5 +1,10 @@
 import { Toaster } from "react-hot-toast";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import AuthRoute from "./components/AuthRoute";
 import Navbar from "./components/Navbar";
@@ -17,8 +22,15 @@ function App() {
           <Navbar />
           <div className="container p-5 mx-auto">
             <Routes>
-              <Route path="/" element={<Home />} />
               <Route path="/signin" element={<SignIn />} />
+              <Route
+                path="/"
+                element={
+                  <AuthRoute>
+                    <Home />
+                  </AuthRoute>
+                }
+              />
               <Route
                 path="/create"
                 element={
